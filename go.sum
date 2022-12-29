@@ -1,0 +1,8 @@
+github.com/an-repository/buffer v0.0.0-20221228233111-c4fcd7443669 h1:oVYrz59ZNKWnvgjFGGwcaQgJO2KxpkoPW7BSiFRIaRc=
+github.com/an-repository/buffer v0.0.0-20221228233111-c4fcd7443669/go.mod h1:GDVrHC7fxqArErpvysL3dbq0ndSYaLvnvWW/YVg940U=
+github.com/an-repository/errors v0.0.0-20221229125134-5ce6800905eb h1:HmEUmqJwXMzGi0wMFaKinpD30CpsOpbSVffxm4EmCmc=
+github.com/an-repository/errors v0.0.0-20221229125134-5ce6800905eb/go.mod h1:t5ffDEHo7WMK/dQeqDZuqS4SmWwff8Y7ETBzjYeWDZ8=
+github.com/an-repository/kvfmt v0.0.0-20221228233128-0d70c9c6378e h1:hLKIZh3F8Fde8ODHnPgNVdzOj+UiSxiMG3DCs3T2gQ4=
+github.com/an-repository/kvfmt v0.0.0-20221228233128-0d70c9c6378e/go.mod h1:TZVp09ImaBnlniMtLMhnAH26J6Fmz6e4nFu8o5B/4xI=
+github.com/an-repository/tracer v0.0.0-20221228233055-4bda216345bd h1:kxosDfWC6bBSsEd5TX+W9lgRj3xAQL+V5t9coeXrBI8=
+github.com/an-repository/tracer v0.0.0-20221228233055-4bda216345bd/go.mod h1:U5aIVsGICAJa/fNG84CaXOdrErTS3d45WpWlayhafug=
