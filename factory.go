@@ -53,6 +53,8 @@ func (f *factory[T]) build(c *Container) (err error) {
 		}
 	}()
 
+	tracer.Sendf("[dikit] build(%s)", f.name) //........................................................................
+
 	instance, err := f.builder(c)
 	if err == nil {
 		f.instance = instance
