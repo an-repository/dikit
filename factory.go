@@ -10,6 +10,7 @@ package dikit
 
 import (
 	"runtime/debug"
+	"sync"
 
 	"github.com/an-repository/errors"
 	"github.com/an-repository/tracer"
@@ -20,6 +21,7 @@ type factory[T any] struct {
 	instance T
 	built    bool
 	builder  Builder[T]
+	mutex    sync.Mutex
 }
 
 func newFactoryWithValue[T any](name string, value T) *factory[T] {
@@ -69,6 +71,9 @@ func (f *factory[T]) build(c *Container) (err error) {
 }
 
 func (f *factory[T]) getInstance(c *Container) (T, error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	if !f.built {
 		if err := f.build(c); err != nil {
 			return empty[T](), err

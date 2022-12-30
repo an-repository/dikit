@@ -19,7 +19,7 @@ import (
 type Container struct {
 	factories map[string]any
 	toClose   []string
-	mutex     sync.Mutex
+	mutex     sync.RWMutex
 }
 
 func NewContainer() *Container {
@@ -30,6 +30,9 @@ func NewContainer() *Container {
 }
 
 func (c *Container) add(name string, f any) error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
 	_, ok := c.factories[name]
 	if ok {
 		return errors.New("this factory already exists", "name", name) /////////////////////////////////////////////////
@@ -43,12 +46,18 @@ func (c *Container) add(name string, f any) error {
 }
 
 func (c *Container) get(name string) (any, bool) {
+	c.mutex.RLock()
+	defer c.mutex.RUnlock()
+
 	f, ok := c.factories[name]
 	return f, ok
 }
 
 func (c *Container) find(fn func(string) bool) []string {
 	list := make([]string, 0)
+
+	c.mutex.RLock()
+	defer c.mutex.RUnlock()
 
 	for name := range c.factories {
 		if fn(name) {
@@ -60,6 +69,9 @@ func (c *Container) find(fn func(string) bool) []string {
 }
 
 func (c *Container) addToClose(name string) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
 	c.toClose = append(c.toClose, name)
 }
 
