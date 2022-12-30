@@ -30,10 +30,7 @@ func AddValue[T any](c *Container, name string, value T) error {
 	return nil
 }
 
-func Get[T any](c *Container, name string) (T, error) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
+func get[T any](c *Container, name string) (T, error) {
 	f, ok := c.get(name)
 	if !ok {
 		return empty[T](), errors.New("factory not found", "name", name) ///////////////////////////////////////////////
@@ -50,6 +47,32 @@ func Get[T any](c *Container, name string) (T, error) {
 	}
 
 	return instance, nil
+}
+
+func Get[T any](c *Container, name string) (T, error) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	return get[T](c, name)
+}
+
+func Find[T any](c *Container, fn func(string) bool) ([]T, error) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	factories := c.find(fn)
+	list := make([]T, 0, len(factories))
+
+	for _, name := range factories {
+		instance, err := get[T](c, name)
+		if err != nil {
+			return nil, err
+		}
+
+		list = append(list, instance)
+	}
+
+	return list, nil
 }
 
 /*

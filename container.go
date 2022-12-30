@@ -47,6 +47,18 @@ func (c *Container) get(name string) (any, bool) {
 	return f, ok
 }
 
+func (c *Container) find(fn func(string) bool) []string {
+	list := make([]string, 0)
+
+	for name := range c.factories {
+		if fn(name) {
+			list = append(list, name)
+		}
+	}
+
+	return list
+}
+
 func (c *Container) addToClose(name string) {
 	c.toClose = append(c.toClose, name)
 }
