@@ -16,6 +16,14 @@ type (
 	closable interface {
 		Close() error
 	}
+
+	startable interface {
+		Start() error
+	}
+
+	stoppableFactory interface {
+		Stop() error
+	}
 )
 
 func empty[T any]() (t T) {

@@ -19,6 +19,7 @@ import (
 type Container struct {
 	factories map[string]any
 	toClose   []string
+	toStop    []string
 	mutex     sync.RWMutex
 }
 
@@ -84,6 +85,33 @@ func (c *Container) Close() error {
 
 	for i := len(c.toClose) - 1; i >= 0; i-- {
 		if err := c.close(c.toClose[i]); err != nil {
+			merr = append(merr, err.Error())
+		}
+	}
+
+	if len(merr) == 0 {
+		return nil
+	}
+
+	return errors.New(strings.Join(merr, " ### ")) /////////////////////////////////////////////////////////////////////
+}
+
+func (c *Container) addToStop(name string) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	c.toStop = append(c.toStop, name)
+}
+
+func (c *Container) stop(name string) error {
+	return c.factories[name].(stoppableFactory).Stop()
+}
+
+func (c *Container) Stop() error {
+	merr := make([]string, 0)
+
+	for i := len(c.toStop) - 1; i >= 0; i-- {
+		if err := c.stop(c.toStop[i]); err != nil {
 			merr = append(merr, err.Error())
 		}
 	}
