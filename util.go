@@ -22,6 +22,10 @@ type (
 	}
 
 	stoppableFactory interface {
+		stop() error
+	}
+
+	stoppable interface {
 		Stop() error
 	}
 )

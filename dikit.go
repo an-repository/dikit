@@ -8,7 +8,10 @@
 
 package dikit
 
-import "github.com/an-repository/errors"
+import (
+	"github.com/an-repository/errors"
+	"github.com/an-repository/tracer"
+)
 
 func Add[T any](c *Container, name string, b Builder[T]) error {
 	return c.add(name, newFactoryWithBuilder(name, b))
@@ -53,6 +56,8 @@ func Start[T any](c *Container, name string) error {
 	if !ok {
 		return errors.New("this component is not startable", "name", name) /////////////////////////////////////////////
 	}
+
+	tracer.Sendf("[dikit] start(%s)", name) //..........................................................................
 
 	if err := component.Start(); err != nil {
 		return err

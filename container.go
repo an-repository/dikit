@@ -104,7 +104,7 @@ func (c *Container) addToStop(name string) {
 }
 
 func (c *Container) stop(name string) error {
-	return c.factories[name].(stoppableFactory).Stop()
+	return c.factories[name].(stoppableFactory).stop()
 }
 
 func (c *Container) Stop() error {

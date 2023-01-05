@@ -94,6 +94,17 @@ func (f *factory[T]) close() error {
 	return instance.Close()
 }
 
+func (f *factory[T]) stop() error {
+	instance, ok := any(f.instance).(stoppable)
+	if !ok {
+		return nil
+	}
+
+	tracer.Sendf("[dikit] stop(%s)", f.name) //.........................................................................
+
+	return instance.Stop()
+}
+
 /*
 ######################################################################################################## @(^_^)@ #######
 */
