@@ -77,7 +77,13 @@ func (c *Container) addToClose(name string) {
 }
 
 func (c *Container) close(name string) error {
-	return c.factories[name].(closableFactory).close()
+	var f any
+
+	c.mutex.RLock()
+	f = c.factories[name]
+	c.mutex.RUnlock()
+
+	return f.(closableFactory).close()
 }
 
 func (c *Container) Close() error {
@@ -104,7 +110,13 @@ func (c *Container) addToStop(name string) {
 }
 
 func (c *Container) stop(name string) error {
-	return c.factories[name].(stoppableFactory).stop()
+	var f any
+
+	c.mutex.RLock()
+	f = c.factories[name]
+	c.mutex.RUnlock()
+
+	return f.(stoppableFactory).stop()
 }
 
 func (c *Container) Stop() error {
